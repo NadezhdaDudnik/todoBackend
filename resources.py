@@ -19,6 +19,17 @@ class Entry:
         #print(f"Добавили {entry.title}")
         entry.parent = self
 
+    def json(self):
+        res ={
+            'title': self.title,
+            'entries': [entry.title for entry in self.entries] #список, который содержит в себе: для каждой записи во вложенных записях название этой записи
+        }
+        #for entry in self.entries:
+            #res['entries'].append(entry.title)
+        return res
+
+
+
     def print_entries(self, indent=0):
         print_with_indent(self, indent)
         for entry in self.entries:
@@ -43,4 +54,5 @@ kolbasa.add_entry(salami)
 chicken = Entry("Chicken")
 salami.add_entry(chicken)
 
-new_entry.print_entries()
+#new_entry.print_entries()
+print(new_entry.json())
