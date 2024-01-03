@@ -1,8 +1,11 @@
 import json
+from test_json import entry
 def print_with_indent(value, indent=0):
     indentation = "\t" * indent
     print(f"{indentation}{str(value)}")
     #print(indentation + str(value))
+
+
 
 class Entry:
     def __init__(self, title, entries=None, parent=None):
@@ -21,7 +24,7 @@ class Entry:
         entry.parent = self
 
     def json(self):
-        res ={
+        res = {
             'title': self.title,
             'entries': [entry.json() for entry in self.entries] #список, который содержит в себе: для каждой записи во вложенных записях название этой записи c рекурсией
         }
@@ -33,26 +36,42 @@ class Entry:
         print_with_indent(self, indent)
         for entry in self.entries:
             entry.print_entries(indent + 1)
+def entry_from_json(value: dict) -> Entry: #type annotation, то есть принимает dictionary, а возвращает Entry
+    #десериализация объекта
+    new_entry = Entry(value['title'])
+    for item in value.get('entries', []):
+        new_entry.add_entry(entry_from_json(item))
+    return new_entry
 
-new_entry = Entry("Продукты")
-meet = Entry("Мясное")
-molochka = Entry("Молочные")
+new_entry = entry_from_json(entry)
+new_entry.print_entries()
+print(new_entry.json())
 
-new_entry.add_entry(meet)
-new_entry.add_entry(molochka)
+new_entry1 = entry_from_json(new_entry.json())
+new_entry1.print_entries()
 
-kolbasa = Entry("колбаса")
-meet.add_entry(kolbasa)
 
-moloko = Entry("Молоко")
-molochka.add_entry(moloko)
+# new_entry = Entry("Продукты")
+# meet = Entry("Мясное")
+# molochka = Entry("Молочные")
+#
+# new_entry.add_entry(meet)
+# new_entry.add_entry(molochka)
+#
+# kolbasa = Entry("колбаса")
+# meet.add_entry(kolbasa)
+#
+# moloko = Entry("Молоко")
+# molochka.add_entry(moloko)
+#
+# salami = Entry('Salami')
+# kolbasa.add_entry(salami)
+#
+# chicken = Entry("Chicken")
+# salami.add_entry(chicken)
+#
+# #new_entry.print_entries()
+# res = new_entry.json()
 
-salami = Entry('Salami')
-kolbasa.add_entry(salami)
-
-chicken = Entry("Chicken")
-salami.add_entry(chicken)
-
-#new_entry.print_entries()
-res = new_entry.json()
-print(json.dumps(res, ensure_ascii=False, indent=2))
+#Сериализация объекта
+# print(json.dumps(res, ensure_ascii=False, indent=2))
