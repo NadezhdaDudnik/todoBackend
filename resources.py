@@ -18,6 +18,14 @@ class Entry:
     def __str__(self):
         return self.title
 
+    @classmethod
+    def entry_from_json(cls, value: dict):
+        # десериализация объекта
+        new_entry = cls(value['title'])
+        for item in value.get('entries', []):
+            new_entry.add_entry(cls.entry_from_json(item))
+        return new_entry
+
     def add_entry(self, entry):
         self.entries.append(entry)
         #print(f"Добавили {entry.title}")
@@ -36,18 +44,13 @@ class Entry:
         print_with_indent(self, indent)
         for entry in self.entries:
             entry.print_entries(indent + 1)
-def entry_from_json(value: dict) -> Entry: #type annotation, то есть принимает dictionary, а возвращает Entry
-    #десериализация объекта
-    new_entry = Entry(value['title'])
-    for item in value.get('entries', []):
-        new_entry.add_entry(entry_from_json(item))
-    return new_entry
 
-new_entry = entry_from_json(entry)
+
+new_entry = Entry.entry_from_json(entry)
 new_entry.print_entries()
 print(new_entry.json())
 
-new_entry1 = entry_from_json(new_entry.json())
+new_entry1 = Entry.entry_from_json(new_entry.json())
 new_entry1.print_entries()
 
 
