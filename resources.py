@@ -1,3 +1,4 @@
+import json
 def print_with_indent(value, indent=0):
     indentation = "\t" * indent
     print(f"{indentation}{str(value)}")
@@ -22,13 +23,11 @@ class Entry:
     def json(self):
         res ={
             'title': self.title,
-            'entries': [entry.title for entry in self.entries] #список, который содержит в себе: для каждой записи во вложенных записях название этой записи
+            'entries': [entry.json() for entry in self.entries] #список, который содержит в себе: для каждой записи во вложенных записях название этой записи c рекурсией
         }
         #for entry in self.entries:
             #res['entries'].append(entry.title)
         return res
-
-
 
     def print_entries(self, indent=0):
         print_with_indent(self, indent)
@@ -55,4 +54,5 @@ chicken = Entry("Chicken")
 salami.add_entry(chicken)
 
 #new_entry.print_entries()
-print(new_entry.json())
+res = new_entry.json()
+print(json.dumps(res, ensure_ascii=False, indent=2))
