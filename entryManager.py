@@ -10,7 +10,7 @@ class EntryManager:
 
     def save(self):
         for entry in self.entries:
-            entry.save(self.data_path)
+            entry.save_entry(self.data_path)
 
     def load(self):
         if not os.path.isdir(self.data_path):
@@ -18,7 +18,7 @@ class EntryManager:
         else:
             for filename in os.listdir(self.data_path):
                 if filename.endswith('.json'):
-                    entry = Entry.load(os.path.join(self.data_path, filename))
+                    entry = Entry.load_entry(os.path.join(self.data_path, filename))
                     self.entries.append(entry)
         return self
 

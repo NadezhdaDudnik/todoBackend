@@ -53,21 +53,24 @@ class Entry:
 
     @classmethod
     def load_entry(cls, filename):
-        with open(filename, 'r') as file:
+        with open(filename, 'r', encoding='utf-8') as file:
             data = json.load(file)
         return cls.entry_from_json(data)
 
 
 new_entry = Entry.entry_from_json(entry)
-new_entry.print_entries()
-print(new_entry.json())
 
-new_entry1 = Entry.entry_from_json(new_entry.json())
-new_entry1.print_entries()
-new_entry.save_entry('D:\programmingPython\/todoBackend')
+if __name__== '__main__':
+    new_entry = Entry.entry_from_json(entry)
+    new_entry.print_entries()
+    print(new_entry.json())
 
-loaded_entry = Entry.load_entry('D:\programmingPython\/todoBackend\Продукты.json')
-print(loaded_entry)
+    new_entry1 = Entry.entry_from_json(new_entry.json())
+    new_entry1.print_entries()
+    new_entry.save_entry('D:\programmingPython\/todoBackend')
+
+    loaded_entry = Entry.load_entry('D:\programmingPython\/todoBackend\Продукты.json')
+    print(loaded_entry)
 
 
 # new_entry = Entry("Продукты")
